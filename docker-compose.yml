@@ -1,0 +1,17 @@
+services:
+  server.local:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+    volumes:
+      - "./server/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./keys/server.crt:/etc/nginx/server.crt"
+      - "./keys/server.key:/etc/nginx/server.key"
+      - "./keys/rootCA.crt:/etc/nginx/ca.crt"
+  client.local:
+    image: curlimages/curl
+    entrypoint: ["sh", "-c", "tail -f /dev/null"]
+    volumes:
+      - "./keys/client.crt:/opt/keys/client.crt"
+      - "./keys/client.key:/opt/keys/client.key"
+      - "./keys/rootCA.crt:/opt/keys/rootCA.crt"
